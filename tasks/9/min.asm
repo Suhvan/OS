@@ -6,12 +6,12 @@ min:
 	push	ebp
 	mov	ebp, esp
 	mov	eax, [ ebp + 8 ]
-	sub	eax, [ ebp + 12 ]
+	cmp	eax, [ ebp + 12 ]
 	jc	_ret_a
 	mov	eax, [ ebp + 12 ]
-	pop	ebp
-	ret
+	jmp	_ret
 _ret_a:
 	mov	eax, [ ebp + 8 ]
+_ret:
 	pop	ebp
 	ret

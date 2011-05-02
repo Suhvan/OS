@@ -24,15 +24,13 @@ _copy:
 	test	al,al
 	jnz	_copy
 
-	mov	si,stroka1
+	mov	bp,stroka1
 	jmp	_print
 
 _err:
-	mov	si,error
-	jmp	_print
-
+	mov	bp,error
+	
 _print: 
-	mov	bp,stroka1
 	mov	ax,1301h
 	mov	bx,3
 	mov	cx,4
@@ -48,6 +46,6 @@ error	db	'Error.',0
 stroka1 db	0
 	times	510-($-$$)	db 0
 	db	0x55,0xaa
-stroka	db	'Ola!',0
+sector_2  db	  'Ola!',0
 	times	507	db 0
 buffer	db	?
