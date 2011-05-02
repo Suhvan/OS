@@ -1,0 +1,2 @@
+by rows:	3 sec
+by columns:	2 sec
