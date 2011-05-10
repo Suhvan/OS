@@ -1,0 +1,9 @@
+Common buffer
+real	0m13.662s
+user	0m27.009s
+sys	0m0.014s
+
+Different buffer
+real	0m0.985s
+user	0m1.912s
+sys	0m0.002s
