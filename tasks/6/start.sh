@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+gcc main.c -o main
+
 function start
 {
 	n = $1
