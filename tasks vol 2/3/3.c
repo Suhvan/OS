@@ -11,14 +11,16 @@
 const int coorx[] = {-1,-1,-1,0,1,1,1,0};
 const int coory[] = {1,0,-1,-1,-1,0,1,1};
 
-class life {
+class life 
+{
 
 	public:
 		int field[10][10];
 		int num_state;
 		bool flag;
 
-		life() {
+		life() 
+		{
 			num_state = 0;
 			memset(field,0,sizeof(field));
 			field[4][4] = 1;
@@ -29,14 +31,18 @@ class life {
 			flag = true;
 		}
 
-		life* next_state() const{
+		life* next_state() const
+		{
 			life* next_life = new life();
 			memset(next_life->field,0,sizeof(next_life->field));
 			int n ,x,y;						
-			for(int i = 0; i< 10; ++i){
-				for(int j = 0; j< 10; ++j){
+			for(int i = 0; i< 10; ++i)
+			{
+				for(int j = 0; j< 10; ++j)
+				{
 					n = 0;	
-					for(int k = 0; k < 8; ++k){
+					for(int k = 0; k < 8; ++k)
+					{
 						x = (i + coorx[k]+10) % 10;
 						y = (j + coory[k]+10) % 10;
 						n += field[x][y];	
@@ -49,12 +55,15 @@ class life {
 			return next_life;
 		}
 
-		void print(int fd) const {
+		void print(int fd) const 
+		{
 			char str[120];
 			sprintf(str,"State: %d\r\n",num_state);
 			write(fd,str,strlen(str));
-			for(int i=0; i<10; ++i){
-				for(int j = 0; j < 10; ++j){
+			for(int i=0; i<10; ++i)
+			{
+				for(int j = 0; j < 10; ++j)
+				{
 					str[j] = "01"[field[i][j]];
 				}
 				str[10]=13;
@@ -65,21 +74,25 @@ class life {
 
 		}
 
-		bool fr(){
+		bool fr()
+		{
 			return flag;
 		}
 
-		void lock(){
+		void lock()
+		{
 			flag = false;
 		}
 
-		void release(){
+		void release()
+		{
 			flag = true;
 		}
 };
 
 
-struct node {
+struct node 
+{
 	life* value;
 	volatile node* next;
 };
@@ -88,12 +101,14 @@ volatile node* cur_life;
 
 
 
-int client_handler(void *arg){
-	int c_sock = (int) arg;	
+int client_handler(void *arg)
+{
+	int c_sock = (intptr_t) arg;	
 
 	char buf[100];
 
-	while(1){
+	while(1)
+	{
 		read(c_sock, buf, 99);
 
 		if(buf[0] == 'q') {
@@ -115,17 +130,19 @@ int client_handler(void *arg){
 	return 0;
 }
 
-int process(void* arg){
+int process(void* arg)
+{
 
 	volatile node *next_life , *prev_life , *tmp;
 
-	while(1){	
-
+	while(1)
+	{	
 		sleep(1);
 
 		prev_life = cur_life;
 
-		while (prev_life->next != NULL) {
+		while (prev_life->next != NULL) 
+		{
 			tmp = prev_life->next;	
 			if(tmp->value->fr()){       		
 				prev_life->next = tmp->next;
@@ -135,15 +152,10 @@ int process(void* arg){
 			else prev_life = tmp;
             		
         	}
-
     		next_life = new node();
 		next_life->value = cur_life->value->next_state();
 		next_life->next = cur_life;
-		cur_life = next_life;
-
-
-
-    		
+		cur_life = next_life;    		
 	}
 	_exit(0);
 }
@@ -155,7 +167,8 @@ int main(){
 	cur_life->value = new life();
 	cur_life->next = NULL;
 	void* child_stack = (void*) ((char*)malloc(65536) + 65536);
-	if (clone(process, child_stack, CLONE_VM, NULL) == -1) {
+	if (clone(process, child_stack, CLONE_VM, NULL) == -1) 
+	{
 		perror("Clone error");
 	        _exit(1);
 	}	
@@ -175,14 +188,16 @@ int main(){
 		listen(sock, 10);
 		client_sock = accept(sock, (sockaddr*) &client_addr, (socklen_t*)& clen);
 		child_stack = (void*) ((char*)malloc(65536) + 65536);
-		if(clone(client_handler, child_stack, CLONE_VM | CLONE_FILES, (void *)client_sock) == -1 ) {
+		if(clone(client_handler, child_stack, CLONE_VM | CLONE_FILES, (void *)client_sock) == -1 ) 
+		{
 			perror("Clone error");
 			_exit(1);
 		}
 	}
 
 
-	while(1) {
+	while(1) 
+	{
 		int state;
 		int pid = waitpid(-1,&state, WNOHANG | __WCLONE);
 
