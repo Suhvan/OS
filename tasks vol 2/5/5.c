@@ -88,6 +88,6 @@ int main(int argc, char *argv[])
 		die(12, "failed join thread 1");
 	if (pthread_join(thread2, NULL) != 0)
 		die(22, "failed join thread 2");
-	printf("%d",array[0]);
+	printf("%d\n",array[0]);
 	return 0;
 }

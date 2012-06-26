@@ -34,7 +34,7 @@ class life
 		life* next_state() const
 		{
 			life* next_life = new life();
-			memset(next_life->field,0,sizeof(next_life->field));
+		-	memset(next_life->field,0,sizeof(next_life->field));
 			int n ,x,y;						
 			for(int i = 0; i< 10; ++i)
 			{
@@ -111,7 +111,8 @@ int client_handler(void *arg)
 	{
 		read(c_sock, buf, 99);
 
-		if(buf[0] == 'q') {
+		if(buf[0] == 'q') 
+		{
 			break;
 		}
 		volatile node* cl_life;

@@ -74,6 +74,7 @@ int main(int argc,char *argv[])
 	int file;
 	endStream = (int*) malloc((argc-1)*sizeof(int));
 	fds = (struct pollfd *)malloc((argc-1)*sizeof(struct pollfd*));
+	
 	if(endStream==NULL || fds==NULL)
 	{
 		puts("Error: not enough memory");
